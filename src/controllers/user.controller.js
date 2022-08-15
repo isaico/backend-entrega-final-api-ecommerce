@@ -33,6 +33,7 @@ export const login = async (req, res) => {
                 process.env.JWT_KEY, {
                 expiresIn: '5m',
             });
+            req.session.token=token
             res.status(200).json({token})
         }else{
             res.status(401).send("usuario o clave incorrecto")
