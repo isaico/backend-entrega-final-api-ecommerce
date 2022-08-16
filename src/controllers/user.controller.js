@@ -4,13 +4,17 @@ import _ from 'underscore';
 
 export const createUser = async (req, res) => {
     const { body } = req;
-    const password = jwt.sign({ password: body.password }, process.env.JWT_KEY);
-    body.password = password;
-    try {
-        const resp = await createUserDB(body);
-        res.status(200).json({ user: resp });
-    } catch (error) {
-        throw new Error(error);
+    if(body.password === body.rewritePassword){
+        const password = jwt.sign({ password: body.password }, process.env.JWT_KEY);
+        body.password = password;
+        try {
+            const resp = await createUserDB(body);
+            res.status(200).render('layout/signupSucces',{user:resp.userName});
+        } catch (error) {
+            throw new Error(error);
+        }
+    }else{
+        res.status(500).send("validacion de contraseña incorrecta, intente nuevamente <button><a href='/signup'>click</a></button>")
     }
 };
 
@@ -34,7 +38,7 @@ export const login = async (req, res) => {
                 expiresIn: '5m',
             });
             req.session.token=token
-            res.status(200).json({token})
+            res.render('layout/loginSucces',{user:user.userName})
         }else{
             res.status(401).send("usuario o clave incorrecto")
         }

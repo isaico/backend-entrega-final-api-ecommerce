@@ -8,5 +8,11 @@ import {
 export const userRouter = express.Router()
 
 userRouter.post('/',login)
-userRouter.post('/register',createUser)
+userRouter.post('/signup',createUser)
+userRouter.get('/signup',(req,res)=>{
+    res.render('layout/signup')
+})
+userRouter.get('/',(req,res)=>{
+    res.render('layout/index');
+})
 

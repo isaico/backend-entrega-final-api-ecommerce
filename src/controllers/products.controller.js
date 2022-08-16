@@ -10,7 +10,7 @@ import {
 export const getProducts = async (req, res, next) => {
     try {
         const products = await readAllProductsDB();
-        res.send(products);
+        res.status(200).render('layout/products',{products});
     } catch (error) {
         next(error);
     }

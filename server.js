@@ -5,25 +5,27 @@ import { productRouter, cartRouter, userRouter } from './src/routes/index.js';
 import { isAuth } from './src/middlewares/isAuth.js';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
-
+import path from 'path';
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.use(cookieParser());
+app.set('view engine', 'ejs');
+app.set('views', path.resolve('./src/views'));
 
 app.use(
     session({
         store: MongoStore.create({
-            mongoUrl:process.env.MONGOATLAS_URI_SESSION,
-                // 'mongodb+srv://isaico:isaias159@cluster0.ai4r7.mongodb.net/sessions',
+            mongoUrl: process.env.MONGOATLAS_URI_SESSION,
             options: {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             },
         }),
-        secret: process.env.SECRET_SESSION,
+        secret: "asd",
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -37,8 +39,10 @@ app.use('/api', cartRouter);
 app.use('/', userRouter);
 app.get('/data', isAuth, (req, res) => {
     console.log('Usuario autorizado');
-    console.log('Estas autenticado');
     res.send('Estas autenticado');
+});
+app.get('/hbs', (req, res) => {
+    res.render('layout/index');
 });
 
 const server = app.listen(PORT, () => {

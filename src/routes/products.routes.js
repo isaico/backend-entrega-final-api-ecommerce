@@ -7,10 +7,11 @@ import {
     deleteProduct,
     updateProduct
 } from '../controllers/index.js'
+import { isAuth } from '../middlewares/isAuth.js'
 
 export const productRouter = express.Router()
 
-productRouter.get('/products',getProducts)
+productRouter.get('/products',isAuth,getProducts)
 productRouter.get('/products/:id',getProductById)
 productRouter.post('/products',addProduct)
 productRouter.put('/products/:id',updateProduct)
