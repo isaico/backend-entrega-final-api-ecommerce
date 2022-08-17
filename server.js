@@ -37,13 +37,7 @@ app.use(
 app.use('/api', productRouter);
 app.use('/api', cartRouter);
 app.use('/', userRouter);
-app.get('/data', isAuth, (req, res) => {
-    console.log('Usuario autorizado');
-    res.send('Estas autenticado');
-});
-app.get('/hbs', (req, res) => {
-    res.render('layout/index');
-});
+
 
 const server = app.listen(PORT, () => {
     console.log(` 🚀🔥server is runing at http://localhost:${PORT} 🚀🔥`);

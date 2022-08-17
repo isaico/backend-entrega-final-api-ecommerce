@@ -6,7 +6,6 @@ export const deleteCartDB =  async (cartId)=>{
      const resp = await CartsModel.deleteOne({_id:cartId})
      if(resp.deletedCount>0) return true
      else return false
-     console.log(resp,"CRUD carrito deleted")
      
  } catch (error) {
      console.log(error)

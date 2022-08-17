@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>producto</h1>
+        <% if(flag){ %> 
+            <li>
+                <img src=<%= producto.foto %> alt="">
+                <h2>
+                    <%= producto.nombre %>
+                </h2>
+                <p>
+                    <%= producto.descripcion %>
+                </p> 
+                <h3>
+                    <strong>
+                        $ <%= producto.precio %>
+                    </strong>
+                    
+                </h3>   
+                <h3>
+                    <%= producto.stock %>
+                </h3>
+                <form action="/api/cart/<%= cartId %>/products/<%= producto._id %>" method="POST">
+                    <label for="amount">cantidad:</label>
+                    <input type="number" name="amount" id="amount" value="1">
+                    <button type="submit" >agregar al carrito </button>
+                </form>
+            </li>
+            <Button><a href="/api/products">ver todos los productos</a></Button>
+            <% } else {%>
+                <h1>producto no encontrado!  </h1>
+                <Button><a href="/api/products">ver todos los productos</a></Button>
+        <% } %>
+    </body>
+</html>

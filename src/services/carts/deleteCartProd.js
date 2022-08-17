@@ -7,7 +7,7 @@ export const deleteCartProductDB = async (cartId,productId) => {
       product_id: productId,
       cart_id: cartId,
     });
-    console.log(resp)
+    
     if (resp.deletedCount > 0) {
       return resp
     } else {

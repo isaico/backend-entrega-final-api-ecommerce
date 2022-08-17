@@ -20,7 +20,6 @@ export const createUser = async (req, res) => {
 
 export const login = async (req, res) => {
     const { body } = req;
-    console.log(body,"lo que llega del req ")
     try {
         const user = await getUserDB(body.userName);
         if (!user) {

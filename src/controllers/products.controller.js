@@ -10,7 +10,8 @@ import {
 export const getProducts = async (req, res, next) => {
     try {
         const products = await readAllProductsDB();
-        res.status(200).render('layout/products',{products});
+        const cartId = req.session.cartId;
+        res.status(200).render('layout/products', { products, cartId });
     } catch (error) {
         next(error);
     }
@@ -19,16 +20,16 @@ export const getProducts = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
     try {
         const productId = req.params.id;
-        console.log(productId);
         const dbResProduct = await readProdDB(productId);
+        let flag = true;
         if (dbResProduct && dbResProduct !== null) {
-            res.send(dbResProduct);
+            let producto = dbResProduct;
+            let cartId = req.session.cartId;
+            console.log(producto, cartId);
+            res.render('layout/productByid', {producto, cartId,flag});
         } else {
-            const error = new Error(
-                `producto con id ${productId} no encontrado`
-            );
-            error.code = 'PRODUCT_NOT_FOUND';
-            throw error;
+            flag=false
+            res.status(404).render('layout/productByid',{flag})
         }
     } catch (error) {
         return next(error);
@@ -46,7 +47,7 @@ export const addProduct = async (req, res, next) => {
         };
         const dbRes = await addProductDB(newProduct);
         if (dbRes) {
-            res.send( dbRes );
+            res.send(dbRes);
         } else {
             throw dbRes;
         }

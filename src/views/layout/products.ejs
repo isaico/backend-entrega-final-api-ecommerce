@@ -9,7 +9,6 @@
 <body>
     <section>
         <h1>productos</h1>
-
         <ul>
                 <% products.forEach(function(prod){ %>
                     <li>
@@ -19,16 +18,25 @@
                         </h2>
                         <p>
                             <%= prod.descripcion %>
+                        </p> 
+                        <h3>
                             <strong>
                                 $ <%= prod.precio %>
                             </strong>
-                        </p>    
+                            
+                        </h3>   
                         <h3>
                             <%= prod.stock %>
                         </h3>
+                        <form action="/api/cart/<%= cartId %>/products/<%= prod._id %>" method="POST">
+                            <label for="amount">cantidad:</label>
+                            <input type="number" name="amount" id="amount" value="1">
+                            <button type="submit" >agregar al carrito </button>
+                        </form>
                     </li>
-                <% }) %>
-            </ul>
+                    <% }) %>
+                </ul>
+                <button><a href="/api/cart/<%= cartId %>/products">ver carrito</a></button>
     </section>
 </body>
 </html>

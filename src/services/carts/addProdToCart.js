@@ -14,7 +14,7 @@ export const addProductToCartDB = async (cartId,productId,qty) => {
        quantity:qty
 
       });
-      console.log(resp)
+      
     return resp;                
   } catch (error) {
       console.log(error)

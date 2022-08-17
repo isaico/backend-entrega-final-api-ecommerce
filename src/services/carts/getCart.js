@@ -5,7 +5,7 @@ import '../../configs/db.config.js';
 export const getCartDB = async (cartId) => {
   try {
     const resp = await Cart_items.find({ cart_id: cartId });
-    console.log(resp);
+    
     if (resp.length) {
       const productos = resp.map((item) => {
         return {
@@ -18,7 +18,7 @@ export const getCartDB = async (cartId) => {
           quantity: item.quantity,
         };
       });
-      console.log(productos,"productos agregados")
+     
       return {
         id: cartId,
         productos: productos,

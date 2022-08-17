@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>cart</title>
+    </head>
+    <body>
+        <section>
+            <h1>Carrito</h1>
+            <h2>Cart id <%= cart.id %></h2>
+            <ul>
+                <% cart.productos.forEach(function(prod){ %>
+                    <li>
+                        <img src=<%= prod.foto %> alt="">
+                        <h2>
+                            <%= prod.nombre %>
+                        </h2>
+                        <p>
+                            <%= prod.descripcion %>
+                        </p> 
+                        <h3>
+                            <strong>
+                                $ <%= prod.precio %>
+                            </strong>
+                            
+                        </h3>  
+                        <h2>
+                            <%= prod.quantity %>
+                        </h2>
+                        <form action="/api/cart/<%= cart.id %>/products/<%= prod.prodId %>" method="DELETE">
+                            <button type="submit">eliminar del carrito</button>
+                        </form>
+                <% }) %>
+
+            </ul>
+        </section>
+        <section>
+            <form action="">
+                
+            </form>
+            <button><a href="">generar orden de compra</a></button>
+        </section>
+    </body>
+</html>
