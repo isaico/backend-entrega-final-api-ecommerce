@@ -1,14 +1,19 @@
 import { OrderModel } from '../../models/index.js';
 import '../../configs/db.config.js';
-import { getCartDB } from '../carts/getCart.js';
 
-export const generateOrderDB = async (req, res) => {
+export const generateOrderDB = async (order) => {
     try {
-        const { body } = req;
-        const { params } = req.params;
-        const cartItems = await getCartDB(params.cartId);
-        //terminar de pedir los datos del cart para generar la orden
-        const resp = await OrderModel.create();
+        // const { body } = req;
+        // const  cartId  = req.params.id;
+        // const orderState = 'generada'
+        // const cart = await getCartDB(cartId);
+        // const order = {
+        //     items:cart.productos,
+        //     estado:orderState,
+        //     adress:body.adress,
+        //     timeStamp:new Date()
+        // }
+        const resp = await OrderModel.create(order);
         return resp;
     } catch (error) {
         throw error;

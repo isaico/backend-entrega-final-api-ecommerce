@@ -37,10 +37,11 @@
             </ul>
         </section>
         <section>
-            <form action="">
-                
+            <form action="/api/order/<%= cart.id %>" method="POST">
+                <label for="">ingrese direccion de envio</label>
+                <input type="text" name="adress"/>
+                <button type="submit">generar orden de compra</button>
             </form>
-            <button><a href="">generar orden de compra</a></button>
         </section>
     </body>
 </html>

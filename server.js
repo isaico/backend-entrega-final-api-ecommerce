@@ -1,8 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import 'dotenv/config';
-import { productRouter, cartRouter, userRouter } from './src/routes/index.js';
-import { isAuth } from './src/middlewares/isAuth.js';
+import { productRouter, cartRouter, userRouter,orderRouter } from './src/routes/index.js';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import path from 'path';
@@ -37,7 +36,7 @@ app.use(
 app.use('/api', productRouter);
 app.use('/api', cartRouter);
 app.use('/', userRouter);
-
+app.use('/api',orderRouter)
 
 const server = app.listen(PORT, () => {
     console.log(` 🚀🔥server is runing at http://localhost:${PORT} 🚀🔥`);

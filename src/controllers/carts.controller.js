@@ -24,6 +24,7 @@ export const getCart = async (req, res, next) => {
     try {
         const cartId = req.params.id;
         const cart = await getCartDB(cartId);
+        
         if (cart) {
           console.log(cart,"carrito")
             // res.send(cart);

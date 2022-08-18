@@ -4,17 +4,24 @@ import _ from 'underscore';
 
 export const createUser = async (req, res) => {
     const { body } = req;
-    if(body.password === body.rewritePassword){
-        const password = jwt.sign({ password: body.password }, process.env.JWT_KEY);
+    if (body.password === body.rewritePassword) {
+        const password = jwt.sign(
+            { password: body.password },
+            process.env.JWT_KEY
+        );
         body.password = password;
         try {
             const resp = await createUserDB(body);
-            res.status(200).render('layout/signupSucces',{user:resp.userName});
+            res.status(200).render('layout/signupSucces', {
+                user: resp.userName,
+            });
         } catch (error) {
             throw new Error(error);
         }
-    }else{
-        res.status(500).send("validacion de contraseña incorrecta, intente nuevamente <button><a href='/signup'>click</a></button>")
+    } else {
+        res.status(500).send(
+            "validacion de contraseña incorrecta, intente nuevamente <button><a href='/signup'>click</a></button>"
+        );
     }
 };
 
@@ -30,18 +37,17 @@ export const login = async (req, res) => {
             process.env.JWT_KEY
         ).password;
         if (body.password === password) {
-            let userWhitoutPass = _.omit(user, 'password');//deepcopy del objeto sin el key password
-            const token = jwt.sign(
-                { userWhitoutPass }, 
-                process.env.JWT_KEY, {
+            let userWhitoutPass = _.omit(user, 'password'); //deepcopy del objeto sin el key password
+            const token = jwt.sign({ userWhitoutPass }, process.env.JWT_KEY, {
                 expiresIn: '5m',
             });
-            req.session.token=token
-            res.render('layout/loginSucces',{user:user.userName})
-        }else{
-            res.status(401).send("usuario o clave incorrecto")
+            req.session.token = token;
+            req.session.user = userWhitoutPass;
+            res.render('layout/loginSucces', { user: user.userName });
+        } else {
+            res.status(401).send('usuario o clave incorrecto');
         }
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
     }
 };
