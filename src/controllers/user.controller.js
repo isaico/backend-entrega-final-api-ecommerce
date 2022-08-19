@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { createUserDB, getUserDB } from '../services/index.js';
 import _ from 'underscore';
+import { sendMailGmail } from '../utils/nodemailer.utils.js';
 
 export const createUser = async (req, res) => {
     const { body } = req;
@@ -12,9 +13,24 @@ export const createUser = async (req, res) => {
         body.password = password;
         try {
             const resp = await createUserDB(body);
-            res.status(200).render('layout/signupSucces', {
-                user: resp.userName,
-            });
+            if (resp !== null) {
+                sendMailGmail({
+                    from: process.env.NODEMAILER_GMAIL_ADRESS,
+                    to: [body.email],
+                    subject: 'Nuevo usuario creado!',
+                    text: `
+                    datos del usuario:
+                    nombre de usuario: ${body.userName},
+                    email: ${body.email},
+                    nombre completo :${body.firstName} ${body.lastName},
+                    `,
+                });
+                res.status(200).render('layout/signupSucces', {
+                    user: resp.userName,
+                });
+            }else{
+                res.status(500).send(`usuario ya creado por favor logeate <button><a href='/'>logearme</a></button>`)
+            }
         } catch (error) {
             throw new Error(error);
         }

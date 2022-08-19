@@ -13,6 +13,12 @@ export const createCart = async (req, res, next) => {
             req.session.cartId = dbResp; //envio el cart al cookie
             res.redirect('/api/products');
         } else {
+            res.render('layout/error', {
+                error: {
+                    id: dbResp,
+                    msg: 'error en la base de datos al crear el cart',
+                },
+            });
             throw dbResp;
         }
     } catch (error) {
@@ -24,18 +30,20 @@ export const getCart = async (req, res, next) => {
     try {
         const cartId = req.params.id;
         const cart = await getCartDB(cartId);
-        
+
         if (cart) {
-          console.log(cart,"carrito")
-            // res.send(cart);
-            res.status(200).render('layout/cart',{cart})
+            res.status(200).render('layout/cart', { cart });
         } else {
-            const error = new Error(`El carrito con id ${cartId} no existe`);
-            error.code = 'CART_NOT_FOUND';
-            throw error;
+            res.status(500).render('layout/error', {
+                error: {
+                    id: cart,
+                    msg: 'error en la base de datos al crear el cart',
+                },
+            });
+            throw cart;
         }
     } catch (error) {
-        return next(error);
+        next(error);
     }
 };
 
@@ -43,7 +51,7 @@ export const addProductToCart = async (req, res, next) => {
     try {
         const cartId = req.params.id;
         const productId = req.params.productId;
-        const  {amount}  = req.body;
+        const { amount } = req.body;
         const dbRes = await addProductToCartDB(cartId, productId, amount);
         if (dbRes) {
             res.send(
@@ -53,10 +61,15 @@ export const addProductToCart = async (req, res, next) => {
                  `
             );
         } else {
-            throw new Error(dbRes,"error en la respuesta de la base de datos");
+            res.render('layout/error', {
+                error: {
+                    id: dbRes,
+                    msg: 'error en la base de datos, no se pudo añadir el producto al cart',
+                },
+            });
+            throw new Error(dbRes);
         }
     } catch (error) {
-        error.status = 500;
         next(error);
     }
 };
@@ -67,9 +80,12 @@ export const deleteCart = (req, res, next) => {
         if (dbRes === true) {
             res.send(`Carrito con id ${cartId} borrado`);
         } else {
-            res.send(
-                `Carrito no encontrado en la base de datos con id ${cartId}`
-            );
+            res.render('layout/error', {
+                error: {
+                    id: dbRes,
+                    msg: 'error en la base de datos, no se encontro el carrito',
+                },
+            });
         }
     } catch (error) {
         next(error);
@@ -86,10 +102,15 @@ export const removeProductOnCart = async (req, res, next) => {
                 `Producto con id: ${productId} removido con exito del carrito con id: ${cartId}`
             );
         } else {
+            res.render('layout/error', {
+                error: {
+                    id: dbRes,
+                    msg: 'error en la base de datos al eliminar el producto del carrito',
+                },
+            });
             throw dbRes;
         }
     } catch (error) {
-        error.status = 500;
         next(error);
     }
 };

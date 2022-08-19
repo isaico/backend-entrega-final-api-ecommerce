@@ -14,11 +14,11 @@ import http from 'http';
 const app = express();
 const server = http.createServer(app);
 import { Server } from 'socket.io';
-import { getMessages, addMessage } from './src/socket/function.socket.js';
 import { messagesRouter } from './src/routes/messages.routes.js';
+import  VARIABLES  from './configEnv.js';
 
 export const io = new Server(server);
-const PORT = process.env.PORT || 8080;
+const PORT = VARIABLES.PORT;
 /* ------------------------------ SERVER CONFIG ----------------------------- */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +39,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 600000,
+            maxAge: Number(VARIABLES.COOKIE_EXP_TIME),
         },
     })
 );
@@ -50,6 +50,19 @@ app.use('/', userRouter);
 app.use('/api', orderRouter);
 app.use('/api', messagesRouter);
 
+app.use('/srvenv', (req, res) => {
+    res.status(200).render('layout/variables', {
+        VARIABLES: {
+            PORT: VARIABLES.PORT,
+            HOST: VARIABLES.HOST,
+            NODE_ENV: VARIABLES.NODE_ENV,
+            MONGOATLAS_URI_SESSION: VARIABLES.MONGOATLAS_URI_SESSION,
+            MONGOATLAS_URI: VARIABLES.MONGOATLAS_URI,
+            COOKIE_EXP_TIME:VARIABLES.COOKIE_EXP_TIME,
+            NODEMAILER_GMAIL_ADRESS:VARIABLES.NODEMAILER_GMAIL_ADRESS
+        },
+    });
+});
 app.use('*', (req, res) => {
     res.status(404).send('ups!, ruta no encontrada ');
 });
