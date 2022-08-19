@@ -14,11 +14,11 @@
         <button id="send">Enviar consulta!</button>
 
         <h2>Todos los Mensajes enviados:</h2>
-        <ul id="listaMsg">
+        <% if(email){ %>
+            <button><a href="/api/chat">volver al chat</a></button>
+        <% } %>
+        <ul id="listaMsg"></ul>
 
-            
-        </ul>
-       
         <script>
             /* -------------------------------------------------------------------------- */
             /*                                   socket                                   */
@@ -31,6 +31,7 @@
             });
 
             socket.on('mensajes', (data) => {
+                console.log(data);
                 let innerText = '';
                 data.map((i) => {
                     innerText += `
@@ -38,7 +39,7 @@
                    <h3>${i.email}</h3>
                    <p>${i.message}</p>
                    <p>${i.timeStamp}</p>
-                   <button><a href="/api/chat/${i.email}">ver mis consultas<a/></button>
+                   <button><a href="/api/chat${i.email}">ver mis consultas<a/></button>
                 </li>`;
                 });
                 document.getElementById('listaMsg').innerHTML = innerText;

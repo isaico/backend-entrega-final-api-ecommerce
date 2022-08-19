@@ -48,24 +48,11 @@ app.use('/api', productRouter);
 app.use('/api', cartRouter);
 app.use('/', userRouter);
 app.use('/api', orderRouter);
-app.use('/api',messagesRouter)
-// app.use('/chat', (req, res) => {
-//     res.render('layout/chat');
-// });
-/* -------------------------------- SOCKET IO ------------------------------- */
-// io.on('connection', (socket) => {
-//     console.log('nuevo usuario conectado');
-//     getMessages();
-//     // socket.on('nuevo-msj', (data) => {
-//     //     addMessage(data);
-//     // });
-//     socket.on('disconnect', () => {
-//         console.log('Usuario desconectado 👋');
-//     });
-// });
-app.use('*',(req,res)=>{
-    res.status(404).send("ups!, ruta no encontrada ")
-})
+app.use('/api', messagesRouter);
+
+app.use('*', (req, res) => {
+    res.status(404).send('ups!, ruta no encontrada ');
+});
 server.listen(PORT, () => {
     console.log(` 🚀🔥server is runing at http://localhost:${PORT} 🚀🔥`);
 });

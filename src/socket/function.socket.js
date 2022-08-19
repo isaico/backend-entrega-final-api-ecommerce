@@ -15,7 +15,7 @@ export const getMessages = async () => {
 export const getMessagesByEmail = async (email) => {
     try {
         const mensajes = await getMessagesByEmailDB(email);
-        console.log(mensajes,"lo que llega de la db ")
+        console.log(mensajes,"lo que llega de la db buscado por mail")
         io.sockets.emit('mensajes', mensajes);
     } catch (error) {
         throw new Error(error);
