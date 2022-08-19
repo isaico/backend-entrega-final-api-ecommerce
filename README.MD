@@ -89,7 +89,5 @@ podremos obtener los valores de las variables previamente mencionadas pasadas po
   ```
 
 
-## About
-
 
 
